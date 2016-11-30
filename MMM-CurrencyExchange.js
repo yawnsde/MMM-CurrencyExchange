@@ -51,12 +51,13 @@ Module.register('MMM-CurrencyExchange',{
 			wrapper.className = "dimmed light small";
 			return wrapper;
 		}		
-
+/*
 		if (!this.rates.length) {
 			wrapper.innerHTML = "No data";
 			wrapper.className = "dimmed light small";
 			return wrapper;
 		}
+*/
 /*
 		var currentDate = this.tides[0].date;
 
@@ -125,6 +126,7 @@ Module.register('MMM-CurrencyExchange',{
 	 */
 	updateCurrencies: function() {
 		var url = this.config.apiBase + this.getParams();
+		Log.error(url);
 		var self = this;
 		var retry = true;
 
@@ -166,12 +168,14 @@ Module.register('MMM-CurrencyExchange',{
 
 	processCurrencies: function(data) {
 
+	Log.error(data);
+	
 		if (!data.rates) {
 			// Did not receive usable new data.
 			// Maybe this needs a better check?
 			return;
 		}
-
+/*
 		this.rates = [];
 
 		for (var i in data.rates) {
@@ -183,7 +187,7 @@ Module.register('MMM-CurrencyExchange',{
 				rate: t[1],
 			});
 		}
-
+*/
 		this.loaded = true;
 		this.updateDom(this.config.animationSpeed);
 	},
