@@ -34,8 +34,12 @@ Module.register('MMM-CurrencyExchange',{
 		this.loaded = false;
 		this.scheduleUpdate(this.config.initialLoadDelay);
 
-		this.updateTimer = null;		
-
+		this.updateTimer = null;
+		
+		if (this.config.base == "") {
+			this.config.base = "EUR";
+		}
+		
 		var self = this;
 		setInterval(function() {
 			self.updateDom();
@@ -51,13 +55,18 @@ Module.register('MMM-CurrencyExchange',{
 			wrapper.className = "dimmed light small";
 			return wrapper;
 		}		
-/*
+
 		if (!this.rates.length) {
 			wrapper.innerHTML = "No data";
 			wrapper.className = "dimmed light small";
 			return wrapper;
 		}
-*/
+
+		wrapper.innerHTML = "Base currency: " + this.config.base;
+		for (i in this.rates) {
+			wrapper.innerHTML += this.rates[i].symbol + " - " + this.rates[i].rate;
+		}
+		
 /*
 		var currentDate = this.tides[0].date;
 
@@ -120,13 +129,8 @@ Module.register('MMM-CurrencyExchange',{
 		return wrapper;
 	},
 
-	/* updateCurrencies
-	 * Requests new data from worldtides.info
-	 * Calls processCurrencies on succesfull response.
-	 */
 	updateCurrencies: function() {
 		var url = this.config.apiBase + this.getParams();
-		Log.error(url);
 		var self = this;
 		var retry = true;
 
@@ -136,14 +140,8 @@ Module.register('MMM-CurrencyExchange',{
 			if (this.readyState === 4) {
 				if (this.status === 200) {
 					self.processCurrencies(JSON.parse(this.response));
-				} else if (this.status === 400) {
-					self.config.appid = "";
-					self.updateDom(self.config.animationSpeed);
-
-					Log.error(self.name + ": Incorrect APPID.");
-					retry = false;
 				} else {
-					Log.error(self.name + ": Could not load tides.");
+					Log.error(self.name + ": Could not load data.");
 				}
 
 				if (retry) {
@@ -155,39 +153,34 @@ Module.register('MMM-CurrencyExchange',{
 	},
 
 	getParams: function() {
-    var params = '';
-    if (this.config.base != "") {
-		  params += "?base=" + this.config.base;
-    }
+		var params = '';
+		if (this.config.base != "") {
+			  params += "?base=" + this.config.base;
+		}
 		if (this.config.symbols) {
-      params += this.config.symbols.join();
-    }
-
+		  params += "&symbols=" + this.config.symbols.join();
+		}
 		return params;
 	},
 
 	processCurrencies: function(data) {
 
-	Log.error(data);
-	
 		if (!data.rates) {
 			// Did not receive usable new data.
 			// Maybe this needs a better check?
 			return;
 		}
-/*
+
 		this.rates = [];
-
-		for (var i in data.rates) {
-			var t = data.rates[i];
-			t = t.split(":");
+		
+		for (key in data.rates) {
+			
 			this.rates.push({
-
-				symbol: t[0],
-				rate: t[1],
+				symbol: key,
+				rate: data.rates[key],
 			});
 		}
-*/
+
 		this.loaded = true;
 		this.updateDom(this.config.animationSpeed);
 	},
