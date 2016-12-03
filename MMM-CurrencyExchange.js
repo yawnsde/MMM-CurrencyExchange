@@ -17,7 +17,7 @@ Module.register('MMM-CurrencyExchange',{
 		updateInterval: 1000 * 3600, //update every hour
 		timeFormat: config.timeFormat,
 		lang: config.language,
-		showCustomHeader: true,
+		showCustomHeader: false,
 		showFlag: true,
 		showText: true,
 		layoutStyle: 'table',
