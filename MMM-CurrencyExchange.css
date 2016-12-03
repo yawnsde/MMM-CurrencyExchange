@@ -1,0 +1,137 @@
+.NOREPEAT {
+	background-repeat: no-repeat;
+	background-position: center center;
+	padding: 0px 8px 0px 10px;
+}
+
+.UNDERLINE {
+	text-decoration: underline;
+}
+
+.EUR {
+	background-image: url('./images/EUR.gif');
+}
+
+.USD {
+	background-image: url('http://www.ecb.europa.eu/shared/img/flags/USD.gif');
+}
+
+.GBP {
+	background-image: url('http://www.ecb.europa.eu/shared/img/flags/GBP.gif');
+}
+
+.AUD {
+	background-image: url('http://www.ecb.europa.eu/shared/img/flags/AUD.gif');
+}
+
+.BGN {
+	background-image: url('http://www.ecb.europa.eu/shared/img/flags/BGN.gif');
+}
+
+.BRL {
+	background-image: url('http://www.ecb.europa.eu/shared/img/flags/BRL.gif');
+}
+
+.CAD {
+	background-image: url('http://www.ecb.europa.eu/shared/img/flags/CAD.gif');
+}
+
+.CHF {
+	background-image: url('http://www.ecb.europa.eu/shared/img/flags/CHF.gif');
+}
+
+.CNY {
+	background-image: url('http://www.ecb.europa.eu/shared/img/flags/CNY.gif');
+}
+
+.CZK {
+	background-image: url('http://www.ecb.europa.eu/shared/img/flags/CZK.gif');
+}
+
+.DKK {
+	background-image: url('http://www.ecb.europa.eu/shared/img/flags/DKK.gif');
+}
+
+.HKD {
+	background-image: url('http://www.ecb.europa.eu/shared/img/flags/HKD.gif');
+}
+
+.HRK {
+	background-image: url('http://www.ecb.europa.eu/shared/img/flags/HRK.gif');
+}
+
+.HUF {
+	background-image: url('http://www.ecb.europa.eu/shared/img/flags/HUF.gif');
+}
+
+.IDR {
+	background-image: url('http://www.ecb.europa.eu/shared/img/flags/IDR.gif');
+}
+
+.ILS {
+	background-image: url('http://www.ecb.europa.eu/shared/img/flags/ILS.gif');
+}
+
+.INR {
+	background-image: url('http://www.ecb.europa.eu/shared/img/flags/INR.gif');
+}
+
+.JPY {
+	background-image: url('http://www.ecb.europa.eu/shared/img/flags/JPY.gif');
+}
+
+.KRW {
+	background-image: url('http://www.ecb.europa.eu/shared/img/flags/KRW.gif');
+}
+
+.MXN {
+	background-image: url('http://www.ecb.europa.eu/shared/img/flags/MXN.gif');
+}
+
+.MYR {
+	background-image: url('http://www.ecb.europa.eu/shared/img/flags/MYR.gif');
+}
+
+.NOK {
+	background-image: url('http://www.ecb.europa.eu/shared/img/flags/NOK.gif');
+}
+
+.NZD {
+	background-image: url('http://www.ecb.europa.eu/shared/img/flags/NZD.gif');
+}
+
+.PHP {
+	background-image: url('http://www.ecb.europa.eu/shared/img/flags/PHP.gif');
+}
+
+.PLN {
+	background-image: url('http://www.ecb.europa.eu/shared/img/flags/PLN.gif');
+}
+
+.RON {
+	background-image: url('http://www.ecb.europa.eu/shared/img/flags/RON.gif');
+}
+
+.RUB {
+	background-image: url('http://www.ecb.europa.eu/shared/img/flags/RUB.gif');
+}
+
+.SEK {
+	background-image: url('http://www.ecb.europa.eu/shared/img/flags/SEK.gif');
+}
+
+.SGD {
+	background-image: url('http://www.ecb.europa.eu/shared/img/flags/SGD.gif');
+}
+
+.THB {
+	background-image: url('http://www.ecb.europa.eu/shared/img/flags/THB.gif');
+}
+
+.TRY {
+	background-image: url('http://www.ecb.europa.eu/shared/img/flags/TRY.gif');
+}
+
+.ZAR {
+	background-image: url('http://www.ecb.europa.eu/shared/img/flags/ZAR.gif');
+}

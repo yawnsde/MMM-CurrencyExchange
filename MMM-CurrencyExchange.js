@@ -17,18 +17,33 @@ Module.register('MMM-CurrencyExchange',{
 		updateInterval: 1000 * 3600, //update every hour
 		timeFormat: config.timeFormat,
 		lang: config.language,
+		showCustomHeader: true,
+		showFlag: true,
+		showText: true,
+		layoutStyle: 'table',
 
 		initialLoadDelay: 0, // 0 seconds delay
-		retryDelay: 2500,
 
 		apiBase: "http://api.fixer.io/latest",				
 	},
 	
-	// Define required scripts.
+// ##################################################################################
+// Define required scripts.
+// ##################################################################################
 	getScripts: function() {
 		return ["moment.js"];
 	},
 
+// ##################################################################################
+// import css files
+// ##################################################################################
+	getStyles: function() {
+		return ['MMM-CurrencyExchange.css'];
+	},	
+
+// ##################################################################################
+// setup the module
+// ##################################################################################
 	start: function() {
 		Log.info('Starting module: ' + this.name);
 		this.loaded = false;
@@ -47,6 +62,9 @@ Module.register('MMM-CurrencyExchange',{
 
 	},
 
+// ##################################################################################
+// handle all the output stuff
+// ##################################################################################
 	getDom: function() {
 		var wrapper = document.createElement("div");
 
@@ -56,79 +74,90 @@ Module.register('MMM-CurrencyExchange',{
 			return wrapper;
 		}		
 
+		// no data was retrieved, maybe the source is down or the request was invalid
 		if (!this.rates.length) {
 			wrapper.innerHTML = "No data";
 			wrapper.className = "dimmed light small";
 			return wrapper;
 		}
 
-		wrapper.innerHTML = "Base currency: " + this.config.base;
+		// display a custom header, just in case
+		if (this.config.showCustomHeader) {
+			var customHeader = document.createElement('div');
+			customHeader.innerHTML = "Base: " + this.config.base + " (" + this.rateUpdate + ")";
+			customHeader.className = "light small UNDERLINE";
+			wrapper.appendChild(customHeader);
+		}
+
+		// get ready to process data and print it to the screen
+		var outputWrapper = document.createElement('div');
+
+		var dataLimit = ((this.rates.length > 8) ? 3 : 2); 
+
+		if (this.config.layoutStyle == 'table') {
+			var table = document.createElement('table');
+			table.className = "small";
+		}
+
 		for (i in this.rates) {
-			wrapper.innerHTML += this.rates[i].symbol + " - " + this.rates[i].rate;
-		}
-		
-/*
-		var currentDate = this.tides[0].date;
+			if (this.config.layoutStyle == 'table') {
+				// we want more columns to save some space on screen, so we iterate and only create a new row with every second dataset
+				if ( i % dataLimit == 0) {
+					var row = document.createElement('tr');
+				}
+				var cell = document.createElement('td');
+			}
+			var rateContainer = document.createElement('span');
+			rateContainer.className = "light small";
 
-		var table = document.createElement("table");
-		table.className = "small";
-
-		var row = document.createElement("tr");
-		table.appendChild(row);
-		var dayHeader = document.createElement("th");
-		dayHeader.className = "day";
-		dayHeader.innerHTML = "&nbsp;";
-		row.appendChild(dayHeader);
-
-		for (var f = 0; f < 4; f++)
-		{
-			var tideSymbol =  document.createElement("span");
-			tideSymbol.className = ( (this.tides[f].type == "Low") ? this.config.lowtideSymbol : this.config.hightideSymbol );
-			var extremeHeader = document.createElement("th");
-			extremeHeader.className = "thin light";
-			extremeHeader.setAttribute("style", "text-align: center");
-			extremeHeader.appendChild(tideSymbol);
-			row.appendChild(extremeHeader);
-		}
-
-		var row = document.createElement("tr");
-		table.appendChild(row);
-		var dayCell = document.createElement("td");
-		dayCell.className = "day";
-		dayCell.innerHTML = this.tides[0].day;
-		row.appendChild(dayCell);
-
-
-		for (var i in this.tides) {
-
-			var currentTide = this.tides[i];
-
-			if (currentDate != currentTide.date) {				
-				var row = document.createElement("tr");
-				table.appendChild(row);
-				currentDate = currentTide.date;
-
-				var dayCell = document.createElement("td");
-				dayCell.className = "day";
-				dayCell.innerHTML = currentTide.day;
-				row.appendChild(dayCell);
-
+			// determine if user wants to see the currency flag
+			if (this.config.showFlag) {
+				var flagSpan = document.createElement('span');
+				flagSpan.innerHTML = "&nbsp;";
+				flagSpan.className = this.rates[i].symbol + " NOREPEAT";
+				rateContainer.appendChild(flagSpan);
 			}
 
-			var tideExtremeCell = document.createElement("td");
-			tideExtremeCell.style.paddingLeft = "10px";
-			tideExtremeCell.innerHTML = currentTide.time;
-
-			if ( moment().unix() > currentTide.dt ) {				
-				tideExtremeCell.className = "dimmed light small";
+			// determine if user wants to see the abbreviated currency text (EUR, USD, ..)
+			if (this.config.showText) {
+				var currencySpan = document.createElement('span');
+				currencySpan.innerHTML = this.rates[i].symbol + ": ";
+				rateContainer.appendChild(currencySpan);			
 			}
-			row.appendChild(tideExtremeCell);
+
+			var rateSpan = document.createElement('span');
+			rateSpan.innerHTML = ((this.config.layoutStyle == 'ticker' && i < (this.rates.length - 1)) ? this.rates[i].rate + ' &bull; ' : this.rates[i].rate);
+			rateContainer.appendChild(rateSpan);
+
+			// if the user wants a table, we add the dataset to a cell. If this is the last dataset for a row or the final dataset we add the row to the table 
+			if (this.config.layoutStyle == 'table') {
+				cell.appendChild(rateContainer);
+				row.appendChild(cell);
+				if ( i % dataLimit != 0 || i == (this.rates.length-1) ) { table.appendChild(row) }
+			} else {
+				outputWrapper.appendChild(rateContainer);
+			}
 		}
-		wrapper.appendChild(table);
-*/
+
+		if (this.config.layoutStyle == 'table') {
+			outputWrapper.appendChild(table);
+			wrapper.appendChild(outputWrapper);
+
+		} else if (this.config.layoutStyle == 'ticker') {
+			var marqueeTicker = document.createElement("marquee");
+			marqueeTicker.innerHTML = outputWrapper.innerHTML;
+			marqueeTicker.className = "small thin light";
+			marqueeTicker.width = document.getElementsByClassName("MMM-CurrencyExchange")[0].clientWidth;
+			marqueeTicker.scrollDelay = 100;
+			wrapper.appendChild(marqueeTicker);
+		}
+
 		return wrapper;
 	},
 
+// ##################################################################################
+// fetch new data
+// ##################################################################################
 	updateCurrencies: function() {
 		var url = this.config.apiBase + this.getParams();
 		var self = this;
@@ -152,6 +181,9 @@ Module.register('MMM-CurrencyExchange',{
 		Request.send();
 	},
 
+// ##################################################################################
+// prepare request url 
+// ##################################################################################
 	getParams: function() {
 		var params = '';
 		if (this.config.base != "") {
@@ -163,6 +195,9 @@ Module.register('MMM-CurrencyExchange',{
 		return params;
 	},
 
+// ##################################################################################
+// validate data after request, prepare for output
+// ##################################################################################
 	processCurrencies: function(data) {
 
 		if (!data.rates) {
@@ -171,6 +206,7 @@ Module.register('MMM-CurrencyExchange',{
 			return;
 		}
 
+		this.rateUpdate = data.date;
 		this.rates = [];
 		
 		for (key in data.rates) {
@@ -185,6 +221,9 @@ Module.register('MMM-CurrencyExchange',{
 		this.updateDom(this.config.animationSpeed);
 	},
 
+// ##################################################################################
+// schedule updates based on define interval
+// ##################################################################################
 	scheduleUpdate: function(delay) {
 		var nextLoad = this.config.updateInterval;
 		if (typeof delay !== "undefined" && delay >= 0) {
