@@ -17,8 +17,8 @@ modules: [
   config: {
     base: 'EUR',
     symbols: ['GBP', 'USD']
-  },
-}
+  }
+},
 ````
 
 ## Configuration options
