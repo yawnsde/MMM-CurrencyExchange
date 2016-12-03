@@ -96,7 +96,7 @@ Module.register('MMM-CurrencyExchange',{
 
 		if (this.config.layoutStyle == 'table') {
 			var table = document.createElement('table');
-			table.className = "small";
+			table.className = "small align-left";
 		}
 
 		for (i in this.rates) {
