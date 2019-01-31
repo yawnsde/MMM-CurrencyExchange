@@ -24,7 +24,7 @@ Module.register('MMM-CurrencyExchange',{
 
 		initialLoadDelay: 0, // 0 seconds delay
 
-		apiBase: "http://api.fixer.io/latest",				
+		apiBase: "https://api.exchangeratesapi.io/latest",
 	},
 	
 // ##################################################################################
@@ -186,6 +186,7 @@ Module.register('MMM-CurrencyExchange',{
 // ##################################################################################
 	getParams: function() {
 		var params = '';
+
 		if (this.config.base != "") {
 			  params += "?base=" + this.config.base;
 		}
