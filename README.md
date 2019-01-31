@@ -1,7 +1,7 @@
 # MMM-CurrencyExchange
 This an extension for the [MagicMirror](https://github.com/MichMich/MagicMirror).
 
-It derives foreign exchange rates from fixer.io
+It derives foreign exchange rates from exchangeratesapi.io
 
 ## Installation
 Open a terminal session, navigate to your MagicMirror's `modules` folder and execute `git clone https://github.com/yawnsde/MMM-CurrencyExchange.git`, a new folder called MMM-CurrencyExchange will be created.
